@@ -1,24 +1,39 @@
-# "websocket-server" パッケージが必要
 from websocket_server import WebsocketServer
+import socket
+import threadiang
 
 ### 変数
-port = 12345
-host_name = "localhost"
+HOST = "localhost"
+PORT = 12345
 
-### イベントハンドラ
+MAX_CON_COUNT  = 8
+MAX_MSG_LENGTH = 128
 
-'''
-ラズパイ側から受信したデータと同一のものを配信する。
-'''
-def receivedNew(client, server, message):
-    print("New message: " + message)
-    server.send_message_to_all(message)
+server = None
+
+def websocket_main():
+    global server
+
+    server = WebsocketServer(port, host=host_name)
+    server.run_forever()
 
 
 def main():
-    server = WebsocketServer(port, host=host_name)
-    server.set_fn_message_received(receivedNew)
-    server.run_forever()
+    websocket_thread = threading.Thread(target=websocket_main)
+    websocket_thread.start()
+    
+    sock = socket(AF_INET, SOCK_STREAM)
+    sock.bind((HOST, POST))
+    sock.listen(MAX_MSG_LENGTH)
 
+    while True:
+        try:
+            conn, addr = sock.accept()
+            req = conn.recv(MAX_MSG_LENGTH).decode('utf-8')
+            conn.close()
+
+            server.send_message_to_all(req)
+
+    
 if __name__ == "__main__":
     main()
