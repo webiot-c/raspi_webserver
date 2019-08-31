@@ -35,7 +35,10 @@ def main():
 
             server.send_message_to_all(req)
         except:
-            print("Connection error!")
+            # HAX: 2回 Ctrl-c を叩く必要がある。プロセス停止の方法がわからない！
+            print("Connection Error, may be keyboard interruption?")
+            print("Program will be terminated.")
+            break
     
 if __name__ == "__main__":
     main()
