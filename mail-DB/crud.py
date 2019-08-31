@@ -32,6 +32,15 @@ def saveDetails():
             return render_template("success.html", msg = msg)
             con.close()
 
+@app.route("/view")
+def view():
+    con = sqlite3.connect("employee.db")
+    con.row_factory = sqlite3.Row
+    cur = con.cursor()
+    cur.execute("select * from Employees")
+    rows = cur.fetchall()
+    return render_template("view.html", rows = rows)
+
 @app.route("/delete")
 def delete():
     return render_template("delete.html")
