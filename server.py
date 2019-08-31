@@ -1,10 +1,11 @@
 from websocket_server import WebsocketServer
-import socket
+from socket import socket, AF_INET, SOCK_STREAM
 import threading
 
 ### 変数
 HOST = "localhost"
-PORT = 12345
+SKT_PORT = 12345
+WS_PORT = 6789
 
 MAX_CON_COUNT  = 8
 MAX_MSG_LENGTH = 128
@@ -14,7 +15,7 @@ server = None
 def websocket_main():
     global server
 
-    server = WebsocketServer(PORT, host=HOST)
+    server = WebsocketServer(WS_PORT, host=HOST)
     server.run_forever()
 
 
@@ -23,7 +24,7 @@ def main():
     websocket_thread.start()
     
     sock = socket(AF_INET, SOCK_STREAM)
-    sock.bind((HOST, POST))
+    sock.bind((HOST, SKT_PORT))
     sock.listen(MAX_MSG_LENGTH)
 
     while True:
