@@ -14,7 +14,7 @@ server = None
 def websocket_main():
     global server
 
-    server = WebsocketServer(port, host=host_name)
+    server = WebsocketServer(PORT, host=HOST)
     server.run_forever()
 
 
