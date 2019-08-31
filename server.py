@@ -1,6 +1,6 @@
 from websocket_server import WebsocketServer
 import socket
-import threadiang
+import threading
 
 ### 変数
 HOST = "localhost"
