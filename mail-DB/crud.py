@@ -18,28 +18,24 @@ def saveDetails():
         try:
             name = request.form["name"]
             email = request.form["email"]
-            address = request.form["address"]
-            with sqlite3.conect("employee.db") as con:
-                cur = con.cursor()
-                cur.execute("INSERT into Employees (name, email, address) values (?,?,?)",(name,email,address))
-                con.commit()
-                msg = "EMployee successfully Added"
-        except:
-            con.rollback()
-            msg = "We can not add the employee to the list"
+            print(name)
+            print(email)
+            print("sqlの部分")
+            conn = sqlite3.connect('mail.db')
+            c = conn.cursor()  # sql実行のためのcursorオブジェクト生成
+            #c.execute("INSERT into data(?,?) VALUES(name, email)")
+            p = "INSERT INTO data(name, email) VALUES(?, ?)"
+            c.execute(p, (name, email))
+
+            conn.commit()
+            print("commit")
+            msg = "データ保存しました。やったぜ！"
+            conn.close()
+            print("close")
+
 
         finally:
             return render_template("success.html", msg = msg)
-            con.close()
-
-@app.route("/view")
-def view():
-    con = sqlite3.connect("employee.db")
-    con.row_factory = sqlite3.Row
-    cur = con.cursor()
-    cur.execute("select * from Employees")
-    rows = cur.fetchall()
-    return render_template("view.html", rows = rows)
 
 @app.route("/delete")
 def delete():
@@ -48,10 +44,10 @@ def delete():
 @app.route("/deleterecord", methods = ["POST"])
 def deleterecord():
     id = request.form["id"]
-    with sqlite3.connect("employee.db") as con:
+    with sqlite3.connect("mail.db") as con:
         try:
-            cur = con.cursor()
-            cur.execute("delete from Employees where id = ?", id)
+            c = con.cursor()
+            c.execute("delete from data where id = ?", id)
             msg = "record successfully deleted"
         except:
             msg = "can't be deleted"
