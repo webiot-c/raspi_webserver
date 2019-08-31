@@ -5,7 +5,6 @@ import cgi
 import sys
 import io
 
-from websocket import create_connection
 from socket import socket, AF_INET, SOCK_STREAM
 
 request_types = {"START": "OPEN", "POLLING": "POLLING", "END": "CLOSE"}
