@@ -33,7 +33,8 @@ def main():
             conn.close()
 
             server.send_message_to_all(req)
-
+        except:
+            print("Connection error!")
     
 if __name__ == "__main__":
     main()
