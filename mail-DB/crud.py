@@ -5,11 +5,11 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_templete("index.html")
+    return render_template("index.html")
 
 @app.route("/add")
 def add():
-    return render_templete("add.html")
+    return render_template("add.html")
 
 @app.route("/savedetails", methods = ["POST", "GET"])
 def saveDetails():
@@ -29,12 +29,12 @@ def saveDetails():
             msg = "We can not add the employee to the list"
 
         finally:
-            return render_templete("success.html", msg = msg)
+            return render_template("success.html", msg = msg)
             con.close()
 
 @app.route("/delete")
 def delete():
-    return render_templete("delete.html")
+    return render_template("delete.html")
 
 @app.route("/deleterecord", methods = ["POST"])
 def deleterecord():
@@ -47,7 +47,7 @@ def deleterecord():
         except:
             msg = "can't be deleted"
         finally:
-            return render_templete("delete_record.html", msg=msg)
+            return render_template("delete_record.html", msg=msg)
 
 if __name__ == "__main__":
     app.run(debug =True)
