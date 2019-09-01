@@ -5,4 +5,4 @@
 /mail-DB/mail.db
 
 # mailの設定ファイル
-mail.ini
+passwd.ini
