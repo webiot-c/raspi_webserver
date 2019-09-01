@@ -1,2 +1,5 @@
 # vimのスワップファイルを無視
 *.swp
+
+# db除外する
+/mail-DB/mail.db
