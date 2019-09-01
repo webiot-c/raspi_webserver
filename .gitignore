@@ -3,3 +3,6 @@
 
 # db除外する
 /mail-DB/mail.db
+
+# mailの設定ファイル
+mail.ini
