@@ -2,16 +2,21 @@
 <html>
     <head>
         <title>add</title>
+        <link rel="stylesheet" href="/static/css/style.css">
     </head>
 
     <body>
         <h2>info</h2>
         <form action = "/savedetails" method="post">
-        <table>
-            <tr><td>Name</td><td><input type="text" name="name"></td></tr>  
-            <tr><td>Email</td><td><input type="email" name="email"></td></tr>   
-            <tr><td><input type="submit" value="Submit"></td></tr>  
-        </table>
+        
+            <label>Name</label>
+            <input type="text" name="name">
+            <br><br>
+
+            <label>Email</label>
+            <input type="email" name="email">
+        </div>
+
         </form>
     </body>
 </html>
