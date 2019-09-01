@@ -3,8 +3,9 @@ from socket import socket, AF_INET, SOCK_STREAM
 import threading
 
 ### 変数
-HOST = "localhost"
+SKT_HOST = "localhost"
 SKT_PORT = 12345
+WS_HOST = "0.0.0.0"
 WS_PORT = 6789
 
 MAX_CON_COUNT  = 8
@@ -15,7 +16,7 @@ server = None
 def websocket_main():
     global server
 
-    server = WebsocketServer(WS_PORT, host=HOST)
+    server = WebsocketServer(WS_PORT, host=WS_HOST)
     server.run_forever()
 
 
@@ -24,7 +25,7 @@ def main():
     websocket_thread.start()
     
     sock = socket(AF_INET, SOCK_STREAM)
-    sock.bind((HOST, SKT_PORT))
+    sock.bind((SKT_HOST, SKT_PORT))
     sock.listen(MAX_MSG_LENGTH)
 
     while True:
@@ -32,6 +33,9 @@ def main():
             conn, addr = sock.accept()
             req = conn.recv(MAX_MSG_LENGTH).decode('utf-8')
             conn.close()
+            
+            print("received; ")
+            print(req)
 
             server.send_message_to_all(req)
         except:
