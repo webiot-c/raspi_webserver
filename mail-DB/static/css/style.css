@@ -5,3 +5,12 @@ body {
 table {
     text-align: center;
 }
+
+a {
+    background-color: #ccccff;
+    border: 2px #9999ff solid;
+    padding: 5px;
+    padding-left: 8px;
+    padding-right: 8px;
+    margin: 5px;
+}
