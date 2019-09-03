@@ -11,6 +11,7 @@ import threading
 import sqlite3
 import re
 import os.path
+import textformatter
 
 ### 変数
 SKT_HOST = "localhost"
@@ -44,6 +45,14 @@ def getEmailFromDatabase():
         formatted += elem
     
     return formatted
+
+def getSendHTML(aed_node, lat, lon, url):
+    html = ""
+    with open("mail_template.html") as f:
+        html = f.read()
+    html = textformatter.formatText(html, {"node_id": aed_node, "lat":lat, "lon":lon, "url":url})
+
+    return html
 
 def main():
     
@@ -86,7 +95,7 @@ def main():
 
             to_email = getEmailFromDatabase()
             
-            message = "TEST MAIL 応急救護の協力をお願いします<br>AEDの場所<br>" + map_url
+            message = getSendHTML(node_name, float(req_elems[2]), float(req_elems[3]), map_url)
             subject = "test mail[複数送信]"
             
             msg = MIMEText(message, "html")

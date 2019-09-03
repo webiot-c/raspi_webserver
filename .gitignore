@@ -6,3 +6,6 @@
 
 # mailの設定ファイル
 passwd.ini
+
+# python デバッグファイル
+__pycache__/
