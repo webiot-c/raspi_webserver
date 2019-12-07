@@ -61,7 +61,7 @@ def main():
     
 
     config = configparser.ConfigParser()
-    config.read('passwd.ini')
+    config.read('/var/www/html/passwd.ini')
     from_email = config["SMTP"]["email"]
     from_passwd =config["SMTP"]["passwd"]
 
