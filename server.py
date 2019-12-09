@@ -107,14 +107,14 @@ def main():
     websocket_thread = threading.Thread(target=websocket_main)
     websocket_thread.start()
     
-    turn_on_led(GPIO_GREEN)
-    
     sock = socket(AF_INET, SOCK_STREAM)
     sock.bind((SKT_HOST, SKT_PORT))
     sock.listen(MAX_MSG_LENGTH)
 
     while True:
         try:
+            turn_on_led(GPIO_GREEN)
+            
             conn, addr = sock.accept()
             req = conn.recv(MAX_MSG_LENGTH).decode('utf-8')
             conn.close()
