@@ -29,7 +29,6 @@ GPIO_RED    = 26
 GPIO_YELLOW = 19
 GPIO_GREEN  = 13
 
-error_reported = False
 
 server = None
 
@@ -93,6 +92,8 @@ def getSendHTML(aed_node, lat, lon, url):
     return html
 
 def main():
+    
+    error_reported = False
     
     initialize_leds()
 
