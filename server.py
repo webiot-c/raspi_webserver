@@ -159,6 +159,7 @@ def main():
         
         except KeyboardInterrupt:
             terminate_leds()
+            # HAX: 2回 Ctrl-c を叩く必要がある。プロセス停止の方法がわからない！
             print("Detected KeyboardInterruption (Pushed Ctrl-c?)")
             print("The program has ** NOT ** finished yet.")
             print("Please push ctrl-c TWICE.")
@@ -167,7 +168,6 @@ def main():
 
         except:
             import traceback
-            # HAX: 2回 Ctrl-c を叩く必要がある。プロセス停止の方法がわからない！
             print("Error occured!")
             traceback.print_exc()
             
