@@ -13,6 +13,9 @@ import re
 import os.path
 import textformatter
 
+import RPi.GPIO as GPIO
+import time
+
 ### 変数
 SKT_HOST = "localhost"
 SKT_PORT = 12345
@@ -22,7 +25,42 @@ WS_PORT = 6789
 MAX_CON_COUNT  = 8
 MAX_MSG_LENGTH = 128
 
+GPIO_RED    = 26
+GPIO_YELLOW = 19
+GPIO_GREEN  = 13
+GPIO_BUTTON = 12
+
 server = None
+
+def initialize_leds():
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(GPIO_RED, GPIO.OUT) # Green  LED ( Working Normally )
+    GPIO.setup(GPIO_YELLOW, GPIO.OUT) # Yellow LED ( Request working )
+    GPIO.setup(GPIO_GREEN, GPIO.OUT) # Red    LED ( Error )
+    GPIO.setup(GPIO_BUTTON, GPIO.IN)  # Button     ( Clear Error Indicator )
+    
+    GPIO.output(GPIO_RED, GPIO.HIGH)
+    GPIO.output(GPIO_YELLOW, GPIO.HIGH)
+    GPIO.output(GPIO_GREEN, GPIO.HIGH)
+    
+    time.sleep(0.5)
+
+    GPIO.output(GPIO_RED, GPIO.LOW)
+    # Keep Yellow LED
+    GPIO.output(GPIO_GREEN, GPIO.LOW)
+
+def turn_on_led(gpio):
+    GPIO.output(GPIO_RED, GPIO.LOW)
+    GPIO.output(GPIO_YELLOW, GPIO.LOW)
+    GPIO.output(GPIO_GREEN, GPIO.LOW)
+    
+    GPIO.output(gpio, GPIO.HIGH)
+
+def terminate_leds():
+    GPIO.output(GPIO_RED, GPIO.LOW)
+    GPIO.output(GPIO_YELLOW, GPIO.LOW)
+    GPIO.output(GPIO_GREEN, GPIO.LOW)
+    GPIO.cleanup()
 
 def websocket_main():
     global server
@@ -56,9 +94,10 @@ def getSendHTML(aed_node, lat, lon, url):
 
 def main():
     
+    initialize_leds()
+
     from_email = ""
     from_passwd = ""
-    
 
     config = configparser.ConfigParser()
     config.read('/var/www/html/passwd.ini')
@@ -67,6 +106,8 @@ def main():
 
     websocket_thread = threading.Thread(target=websocket_main)
     websocket_thread.start()
+    
+    turn_on_led(GPIO_GREEN)
     
     sock = socket(AF_INET, SOCK_STREAM)
     sock.bind((SKT_HOST, SKT_PORT))
@@ -77,6 +118,8 @@ def main():
             conn, addr = sock.accept()
             req = conn.recv(MAX_MSG_LENGTH).decode('utf-8')
             conn.close()
+            
+            turn_on_led(GPIO_YELLOW)
             
             print("received; ")
             print(req)
@@ -112,16 +155,17 @@ def main():
 
             print("Mail was sent!")
             
-
-        except Exception as e:
+            turn_on_led(GPIO_GREEN)
+            
+        except:
+            import traceback
             # HAX: 2回 Ctrl-c を叩く必要がある。プロセス停止の方法がわからない！
+            terminate_leds()
             print("Connection Error, may be keyboard interruption?")
             print("Program will be terminated.")
-
-            print(str(type(e)))
-            print(str(e.args))
-            print(str(e))
-
+            
+            traceback.print_exc()
+            
             break
     
 if __name__ == "__main__":
