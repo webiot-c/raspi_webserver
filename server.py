@@ -28,7 +28,6 @@ MAX_MSG_LENGTH = 128
 GPIO_RED    = 26
 GPIO_YELLOW = 19
 GPIO_GREEN  = 13
-GPIO_BUTTON = 12
 
 error_reported = False
 
@@ -39,7 +38,6 @@ def initialize_leds():
     GPIO.setup(GPIO_RED, GPIO.OUT) # Green  LED ( Working Normally )
     GPIO.setup(GPIO_YELLOW, GPIO.OUT) # Yellow LED ( Request working )
     GPIO.setup(GPIO_GREEN, GPIO.OUT) # Red    LED ( Error )
-    GPIO.setup(GPIO_BUTTON, GPIO.IN)  # Button     ( Clear Error Indicator )
     
     GPIO.output(GPIO_RED, GPIO.HIGH)
     GPIO.output(GPIO_YELLOW, GPIO.HIGH)
