@@ -156,18 +156,23 @@ def main():
             print("Mail was sent!")
             
             turn_on_led(GPIO_GREEN)
+        
+        except KeyboardInterrupt:
+            terminate_leds()
+            print("Detected KeyboardInterruption (Pushed Ctrl-c?)")
+            print("The program has ** NOT ** finished yet.")
+            print("Please push ctrl-c TWICE.")
             
+            break
+
         except:
             import traceback
             # HAX: 2回 Ctrl-c を叩く必要がある。プロセス停止の方法がわからない！
-            terminate_leds()
-            print("Connection Error, may be keyboard interruption?")
-            print("Program will be terminated.")
-            
+            print("Error occured!")
             traceback.print_exc()
             
-            break
-    
+            turn_on_led(GPIO_RED)
+
 if __name__ == "__main__":
     main()
 
