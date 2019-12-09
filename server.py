@@ -30,6 +30,8 @@ GPIO_YELLOW = 19
 GPIO_GREEN  = 13
 GPIO_BUTTON = 12
 
+error_reported = False
+
 server = None
 
 def initialize_leds():
@@ -113,7 +115,7 @@ def main():
 
     while True:
         try:
-            turn_on_led(GPIO_GREEN)
+            turn_on_led(GPIO_RED if error_reported else GPIO_GREEN)
             
             conn, addr = sock.accept()
             req = conn.recv(MAX_MSG_LENGTH).decode('utf-8')
@@ -170,8 +172,9 @@ def main():
             import traceback
             print("Error occured!")
             traceback.print_exc()
-            
             turn_on_led(GPIO_RED)
+            error_reported = True
+
 
 if __name__ == "__main__":
     main()
